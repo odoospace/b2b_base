@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <!--
+    <record model="ir.ui.view" id="b2b_base.list">
+      <field name="name">b2b_base list</field>
+      <field name="model">b2b_base.b2b_base</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    -->
+
+    <!-- actions opening views on models -->
+    <!--
+    <record model="ir.actions.act_window" id="b2b_base.action_window">
+      <field name="name">b2b_base window</field>
+      <field name="res_model">b2b_base.b2b_base</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    -->
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="b2b_base.action_server">
+      <field name="name">b2b_base server</field>
+      <field name="model_id" ref="model_b2b_base_b2b_base"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+    <!--
+    <menuitem name="b2b_base" id="b2b_base.menu_root"/>
+    -->
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="b2b_base.menu_1" parent="b2b_base.menu_root"/>
+    <menuitem name="Menu 2" id="b2b_base.menu_2" parent="b2b_base.menu_root"/>
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="b2b_base.menu_1_list" parent="b2b_base.menu_1"
+              action="b2b_base.action_window"/>
+    <menuitem name="Server to list" id="b2b_base" parent="b2b_base.menu_2"
+              action="b2b_base.action_server"/>
+    -->
+  </data>
+</odoo>
