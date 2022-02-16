@@ -2,7 +2,7 @@
 from odoo import http
 from odoo import fields, http, tools, _
 from odoo.http import request
-from odoo.addons.sale.controllers.product_configurator import ProductConfiguratorController
+from odoo.addons.sale_product_configurator.controllers.main import ProductConfiguratorController
 
 
 class WebsiteSaleExtra(http.Controller):
@@ -28,11 +28,12 @@ class WebsiteSaleExtra(http.Controller):
             'date': fields.Date.today(),
             'suggested_products': order._cart_accessories()
         })
-        value['website_sale.short_cart_summary'] = request.env['ir.ui.view'].render_template("website_sale.short_cart_summary", {
-            'website_sale_order': order,
-            'compute_currency': lambda price: from_currency._convert(
-                price, to_currency, order.company_id, fields.Date.today()),
-        })
+        value['website_sale.short_cart_summary'] = request.env['ir.ui.view'].render_template(
+            "website_sale.short_cart_summary", {
+                'website_sale_order': order,
+                'compute_currency': lambda price: from_currency._convert(
+                    price, to_currency, order.company_id, fields.Date.today()),
+            })
         return value
 
     @http.route(['/shop/cart/update/product'], type='http', auth="public", methods=['POST'], website=True)
@@ -43,11 +44,10 @@ class WebsiteSaleExtra(http.Controller):
             return None
         if add_qty <= 0.0:
             return None
-        request.website.sale_get_order(force_create=1)._cart_update(product_id=int(product_id), add_qty=add_qty, set_qty=float(set_qty))
+        request.website.sale_get_order(force_create=1)._cart_update(product_id=int(product_id), add_qty=add_qty,
+                                                                    set_qty=float(set_qty))
 
     @http.route(['/shop/cart/update/client_order_ref/'], type='json', auth="public", methods=['POST'], website=True)
     def cart_update_origin(self, client_order_ref):
         order = request.website.sale_get_order()
         order.write({'client_order_ref': client_order_ref})
-
-
