@@ -7,7 +7,7 @@ from odoo.addons.sale_product_configurator.controllers.main import ProductConfig
 
 class WebsiteSaleExtra(http.Controller):
     @http.route(['/shop/cart/status'], type='json', auth="public", methods=['POST'], website=True)
-    def cart_status(self):
+    def cart_status(self, product_id, line_id=None, add_qty=None, set_qty=None, display=True):
         """This route is called when changing quantity from the cart or adding
         a product from the product list."""
         order = request.website.sale_get_order()
@@ -15,24 +15,29 @@ class WebsiteSaleExtra(http.Controller):
         from_currency = order.company_id.currency_id
         to_currency = order.pricelist_id.currency_id
 
-        value = {
-            'cart_quantity': order.cart_quantity,
-            'website_sale': {}
-        }
+        value = order._cart_update(product_id=product_id, line_id=line_id, add_qty=None, set_qty=set_qty)
+
+        value['cart_quantity'] = order.cart_quantity
+        value['website_sale'] = {}
+
+        # value = {
+        #     'cart_quantity': order.cart_quantity,
+        #     'website_sale': {}
+        # }
 
         value['website_sale.cart_lines'] = request.env['ir.ui.view']._render_template("website_sale.cart_lines", {
             'website_sale_order': order,
             # compute_currency deprecated (not used in view)
-            'compute_currency': lambda price: from_currency._convert(
-                price, to_currency, order.company_id, fields.Date.today()),
+            # 'compute_currency': lambda price: from_currency._convert(
+            #     price, to_currency, order.company_id, fields.Date.today()),
             'date': fields.Date.today(),
             'suggested_products': order._cart_accessories()
         })
         value['website_sale.short_cart_summary'] = request.env['ir.ui.view']._render_template(
             "website_sale.short_cart_summary", {
                 'website_sale_order': order,
-                'compute_currency': lambda price: from_currency._convert(
-                    price, to_currency, order.company_id, fields.Date.today()),
+                # 'compute_currency': lambda price: from_currency._convert(
+                #     price, to_currency, order.company_id, fields.Date.today()),
             })
         return value
 
