@@ -15,7 +15,7 @@ class WebsiteSaleExtra(http.Controller):
         from_currency = order.company_id.currency_id
         to_currency = order.pricelist_id.currency_id
 
-        value = order._cart_update(product_id=product_id, line_id=line_id, add_qty=None, set_qty=set_qty)
+        value = order._cart_update(product_id=product_id, line_id=line_id, add_qty=add_qty, set_qty=set_qty)
 
         value['cart_quantity'] = order.cart_quantity
         value['website_sale'] = {}
